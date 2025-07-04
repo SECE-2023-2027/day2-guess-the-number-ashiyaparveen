@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess My Number</title>
+    <style>
+        body {
+            text-align: center;
+            background-color: black;
+            color: white;
+            font-size: large;
+            margin: 0;
+            padding: 0;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        header {
+            font-size: xx-large;
+            color: white;
+            font-weight: bold;
+            margin-top: 30px;
+        }
+        .between {
+            font-size: medium;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .line {
+            font-size: xx-large;
+            border-bottom: 4px solid white;
+            width: 100%;
+            height: 40px;
+            margin: 20px 0;
+        }
+        .btn-again {
+            font-size: large;
+            padding: 10px 30px;
+            margin: 20px 0;
+            
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+        }
+        .line {
+            flex: 1;
+            font-size: xx-large;
+            border-bottom: 4px solid white;
+            height: 40px;
+            margin: 0 20px 0 0;
+        }
+        .btn {
+            font-size: xx-large;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            width: 80px;
+            padding: 20px;
+            height: 80px;
+            border-radius: 0%;
+            background: #222;
+            color: rgb(15, 239, 220);
+            border: 2px solid rgb(19, 249, 230);
+            margin: 0;
+            margin-top: -50%;
+        }
+        .message {
+            font-size: large;
+            margin: 20px 0;
+        }
+        .score, .highscore {
+            font-size: large;
+            margin: 10px 0;
+        }
+        .number {
+            margin: 20px 0;
+        }
+        .guess-input {
+            font-size: large;
+            width: 80px;
+            padding: 5px;
+            text-align: center;
+        }
+        .check {
+            font-size: large;
+            padding: 10px 30px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin: 20px;">
+        <button class="btn-again">Again</button>
+        <div class="between">(Between 1 and 20)</div>
+    </div>
+    <header>
+        <h1>Guess My Number</h1>
+    </header>
+    <div class="line"></div>
+    <button class="btn">?</button>
+    <div class="message">Start guessing...</div>
+    <div class="number">
+        <input type="number" class="guess-input" placeholder="" min="1" max="20"/>
+    </div>
+    <button class="check">Check!</button>
+    <div class="score">Score: 20</div>
+    <div class="highscore">Highscore: 0</div>
+</body>
+<script>
+    let secretNumber = Math.trunc(Math.random() * 20) + 1;
+    let score = 20;
+    let highscore = 0;
+
+    const displayMessage = function(message) {
+        document.querySelector('.message').textContent = message;
+    };
+
+    document.querySelector('.check').addEventListener('click', function () {
+        const guess = Number(document.querySelector('.guess-input').value);
+
+        // When there's no input
+        if (!guess) {
+            displayMessage(' No number!');
+
+        // When player wins
+        } else if (guess === secretNumber) {
+            displayMessage(' Correct Number!');
+            document.querySelector('.btn').textContent = secretNumber;
+            document.body.style.backgroundColor = '#60b347';
+
+            if (score > highscore) {
+                highscore = score;
+                document.querySelector('.highscore').textContent = 'Highscore: ' + highscore;
+            }
+
+        // When guess is wrong
+        } else if (guess !== secretNumber) {
+            if (score > 1) {
+                displayMessage(guess > secretNumber ? ' Too high!' : ' Too low!');
+                score--;
+                document.querySelector('.score').textContent = 'Score: ' + score;
+            } else {
+                displayMessage(' You lost the game!');
+                document.querySelector('.score').textContent = 'Score: 0';
+            }
+        }
+    });
+
+    document.querySelector('.btn-again').addEventListener('click', function () {
+        score = 20;
+        secretNumber = Math.trunc(Math.random() * 20) + 1;
+
+        displayMessage('Start guessing...');
+        document.querySelector('.score').textContent = 'Score: ' + score;
+        document.querySelector('.btn').textContent = '?';
+        document.querySelector('.guess-input').value = '';
+        document.body.style.backgroundColor = 'black';
+    });
+</script>
+
+
+</html>
+
+
